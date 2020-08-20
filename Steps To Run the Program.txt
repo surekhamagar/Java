@@ -1,0 +1,21 @@
+Steps 1: 
+
+Install 
+Java jdk1.8.0_261 version
+Microsoft Sql Server 2014
+Netbeans
+
+Configure mssql-jdbc-8.4.0.jre8 driver to setup the connection between Java and SQL Server
+
+
+Steps 2
+
+Create Hospital Database and create tables and insert data into those tables by running 
+"database Script.txt" in Microsoft SQL server 2014
+
+
+Step 3
+
+Import the Hospital.java project and run the project.
+
+
