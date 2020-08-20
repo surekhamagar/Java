@@ -1,0 +1,37 @@
+/* Queries for Case 1 */
+
+Select count(*) as Count ,clinicinfo.clinicname FROM appointmentinfo  Inner Join clinicinfo On appointmentinfo.clinicid=clinicinfo.clinicid
+group by clinicinfo.clinicid ,clinicinfo.clinicname
+
+Select count(*) as AppointmentCount,DATEPART(yyyy, appdate) as Year FROM appointmentinfo
+group by DATEPART(yyyy, appdate)
+
+Select count(*) as AppointmentCount,DATEPART(MM, appdate) as Month, DATEPART(yyyy, appdate) as Year FROM appointmentinfo
+group by DATEPART(MM, appdate),DATEPART(yyyy, appdate)
+Order by DATEPART(yyyy, appdate)
+
+
+/* Queries for Case 2 */
+
+select patientinfo.patId,patientinfo.firstname,patientinfo.lastname,patientinfo.city,patientinfo.state,appointmentinfo.appdate from dbo.patientinfo Inner Join appointmentinfo
+On patientinfo.patId=appointmentinfo.patid
+where appointmentinfo.appdate< CURRENT_TIMESTAMP
+
+/* Queries for Case 3 */
+
+Update patientinfo set age=DATEDIFF(day,birthdate,GETDATE())/365 , patientagegroup=case when DATEDIFF(day,birthdate,GETDATE())/365 <18 then 'Minor' when DATEDIFF(day,birthdate,GETDATE())/365 >18  then 'Adult' end 
+
+Select patId,lastname,firstname,birthdate,age,patientagegroup from patientinfo
+
+/* Queries for Case 4 */
+
+select proceduretype, clinicinfo.clinicname,doctorinfo.firstname as ProviderName,DATEPART(MM, appointmentinfo.appdate) as Month, DATEPART(yyyy, appointmentinfo.appdate) as Year,sum(appointmentinfo.amount) as Amount from transactioninfo 
+inner join clinicinfo on transactioninfo.clinicid=clinicinfo.clinicid 
+inner join doctorinfo on transactioninfo.prov=doctorinfo.IDNo 
+inner join appointmentinfo on transactioninfo.prov=appointmentinfo.provider 
+group by proceduretype,clinicinfo.clinicname,prov,doctorinfo.firstname,appointmentinfo.provider,DATEPART(MM, appointmentinfo.appdate) , DATEPART(yyyy, appointmentinfo.appdate) 
+order by clinicname,prov,DATEPART(MM, appointmentinfo.appdate), DATEPART(yyyy, appointmentinfo.appdate)
+
+/* Queries for Case 5 */
+
+Delete from dbo.appointmentinfo1 where amount<50
